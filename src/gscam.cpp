@@ -269,7 +269,10 @@ namespace gscam {
       // actual capture framerate of the device.
       // ROS_DEBUG("Getting data...");
 #if (GST_VERSION_MAJOR == 1)
-      GstSample* sample = gst_app_sink_pull_sample(GST_APP_SINK(sink_));
+      ROS_INFO("Here");
+      GstSample* sample = gst_app_sink_try_pull_sample(GST_APP_SINK(sink_),GstClockTime(5000000000));
+      // GstSample* sample = gst_app_sink_pull_sample(GST_APP_SINK(sink_));
+      ROS_INFO("Here2");
       if(!sample) {
         ROS_ERROR("Could not get gstreamer sample.");
         break;
@@ -433,7 +436,9 @@ namespace gscam {
         ROS_INFO("Reopening stream...");
       } else {
         ROS_INFO("Cleaning up stream and exiting...");
-        break;
+        // break;
+        ros::shutdown();
+        exit(1);
       }
     }
 
