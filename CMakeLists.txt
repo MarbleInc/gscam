@@ -5,8 +5,8 @@ project(gscam)
 # System Dependencies
 find_package(PkgConfig)
 
-pkg_check_modules(GSTREAMER QUIET gstreamer-0.10)
-if(NOT GSTREAMER_FOUND)
+pkg_check_modules(GSTREAMER QUIET gstreamer-1.0)
+if(GSTREAMER_FOUND)
   set(GSTREAMER_VERSION_1_x TRUE)
 endif()
 if(GSTREAMER_VERSION_1_x)
@@ -48,7 +48,7 @@ if(USE_ROSBUILD)
 
 else()
   # Use Catkin
-  find_package(catkin REQUIRED 
+  find_package(catkin REQUIRED
     COMPONENTS roscpp image_transport sensor_msgs nodelet
     camera_calibration_parsers camera_info_manager
     )
@@ -123,8 +123,6 @@ endif()
 # Interim compatibility
 # Remove this in the next distribution release
 configure_file(scripts/gscam_node.in ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/gscam_node)
-file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/gscam_node 
+file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/gscam_node
   DESTINATION ${EXECUTABLE_OUTPUT_PATH}
   FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-
-

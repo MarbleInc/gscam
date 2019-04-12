@@ -60,6 +60,9 @@ namespace gscam {
     std::string camera_name_;
     std::string camera_info_url_;
 
+    // Timeout parameter in seconds
+    double timeout_;
+
     // ROS Inteface
     // Calibration between ros::Time and gst timestamps
     double time_offset_;

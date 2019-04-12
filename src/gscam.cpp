@@ -77,6 +77,7 @@ namespace gscam {
 
     nh_private_.param("reopen_on_eof", reopen_on_eof_, false);
 
+
     // Get the camera parameters file
     nh_private_.getParam("camera_info_url", camera_info_url_);
     nh_private_.getParam("camera_name", camera_name_);
@@ -111,6 +112,7 @@ namespace gscam {
     nh_private_.param("min_delay", min_delay_, 0.0);
     nh_private_.param("max_delay", max_delay_, (1.0/expected_fps_)*fps_tolerance_);
     nh_private_.param("diagnostic_window", diagnostic_window_, 10);
+    nh_private_.param("timeout", timeout_, 5.0);
 
     if (expected_fps_> 0) {
       ROS_INFO_STREAM("Setting up diagnostics at " << expected_fps_ << " fps.");
@@ -289,7 +291,7 @@ namespace gscam {
       // actual capture framerate of the device.
       // ROS_DEBUG("Getting data...");
 #if (GST_VERSION_MAJOR == 1)
-      GstSample* sample = gst_app_sink_pull_sample(GST_APP_SINK(sink_));
+      GstSample* sample = gst_app_sink_try_pull_sample(GST_APP_SINK(sink_),GstClockTime(timeout_*1000000000));
       if(!sample) {
         ROS_ERROR("Could not get gstreamer sample.");
         break;
