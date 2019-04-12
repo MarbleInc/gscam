@@ -104,6 +104,8 @@ namespace gscam {
       nh_private_.setParam("frame_id",frame_id_);
     }
 
+    nh_private_.param("timeout", timeout_, 5.0);
+    
     return true;
   }
 
@@ -269,7 +271,7 @@ namespace gscam {
       // actual capture framerate of the device.
       // ROS_DEBUG("Getting data...");
 #if (GST_VERSION_MAJOR == 1)
-      GstSample* sample = gst_app_sink_pull_sample(GST_APP_SINK(sink_));
+      GstSample* sample = gst_app_sink_try_pull_sample(GST_APP_SINK(sink_),GstClockTime(timeout_*1000000000));
       if(!sample) {
         ROS_ERROR("Could not get gstreamer sample.");
         break;
