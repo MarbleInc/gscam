@@ -83,7 +83,7 @@ namespace gscam {
     // Get the image encoding
     nh_private_.param("image_encoding", image_encoding_, sensor_msgs::image_encodings::RGB8);
     if (image_encoding_ != sensor_msgs::image_encodings::RGB8 &&
-        image_encoding_ != sensor_msgs::image_encodings::MONO8 && 
+        image_encoding_ != sensor_msgs::image_encodings::MONO8 &&
         image_encoding_ != "jpeg") {
       ROS_FATAL_STREAM("Unsupported image encoding: " + image_encoding_);
     }
@@ -105,7 +105,7 @@ namespace gscam {
     }
 
     nh_private_.param("timeout", timeout_, 5.0);
-    
+
     return true;
   }
 
@@ -134,19 +134,19 @@ namespace gscam {
 #if (GST_VERSION_MAJOR == 1)
     // http://gstreamer.freedesktop.org/data/doc/gstreamer/head/pwg/html/section-types-definitions.html
     if (image_encoding_ == sensor_msgs::image_encodings::RGB8) {
-        caps = gst_caps_new_simple( "video/x-raw", 
+        caps = gst_caps_new_simple( "video/x-raw",
             "format", G_TYPE_STRING, "RGB",
-            NULL); 
+            NULL);
     } else if (image_encoding_ == sensor_msgs::image_encodings::MONO8) {
-        caps = gst_caps_new_simple( "video/x-raw", 
+        caps = gst_caps_new_simple( "video/x-raw",
             "format", G_TYPE_STRING, "GRAY8",
-            NULL); 
+            NULL);
     } else if (image_encoding_ == "jpeg") {
         caps = gst_caps_new_simple("image/jpeg", NULL, NULL);
     }
 #else
     if (image_encoding_ == sensor_msgs::image_encodings::RGB8) {
-        caps = gst_caps_new_simple( "video/x-raw-rgb", NULL,NULL); 
+        caps = gst_caps_new_simple( "video/x-raw-rgb", NULL,NULL);
     } else if (image_encoding_ == sensor_msgs::image_encodings::MONO8) {
         caps = gst_caps_new_simple("video/x-raw-gray", NULL, NULL);
     } else if (image_encoding_ == "jpeg") {
@@ -265,7 +265,7 @@ namespace gscam {
     ROS_INFO("Started stream.");
 
     // Poll the data as fast a spossible
-    while(ros::ok()) 
+    while(ros::ok())
     {
       // This should block until a new frame is awake, this way, we'll run at the
       // actual capture framerate of the device.
@@ -435,7 +435,8 @@ namespace gscam {
         ROS_INFO("Reopening stream...");
       } else {
         ROS_INFO("Cleaning up stream and exiting...");
-        break;
+        ros::shutdown();
+        exit(1);
       }
     }
 
