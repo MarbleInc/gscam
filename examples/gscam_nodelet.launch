@@ -16,7 +16,8 @@
     <param name="camera_name" value="default"/>
     <param name="camera_info_url" value="package://gscam/examples/uncalibrated_parameters.ini"/>
     <!-- <param name="gscam_config" value="v4l2src device=$(arg DEVICE) ! video/x-raw-rgb,framerate=$(arg FPS) ! ffmpegcolorspace"/> -->
-    <param name="gscam_config" value="udpsrc port=25000 ! application/x-rtp, payload=96 ! rtpjpegdepay ! jpegdec ! videoconvert"/>
+    <!-- <param name="gscam_config" value="udpsrc port=25000 ! application/x-rtp, payload=96 ! rtpjpegdepay ! jpegdec ! videoconvert"/> -->
+    <param name="gscam_config" value="udpsrc port=25000 ! application/x-rtp,media=video,clock-rate=90000,encoding-name=JPEG,width=(string)1280,height=(string)720,sampling=(string)YCbCr-4:2:0 ! rtpjpegdepay ! jpegdec ! videoscale ! videorate ! video/x-raw,format=YUV,height=1080,width=1920,framerate=$15/1 ! videoflip method=0 ! videoconvert"/>
     <!-- <param name="gscam_config" value="udpsrc port=25000 ! application/x-rtp, payload=96 ! rtpjpegdepay"/> -->
     <param name="frame_id" value="/v4l_frame"/>
     <param name="sync_sink" value="true"/>
