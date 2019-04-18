@@ -421,6 +421,8 @@ namespace gscam {
         freq_diagnostic_->tick(cinfo->header.stamp);
         updater_.update();
       }
+
+      ros::spinOnce();
     }
   }
 
@@ -440,8 +442,6 @@ namespace gscam {
   }
 
   void GSCam::run() {
-    ros::AsyncSpinner spinner(1);
-    spinner.start();
     while(ros::ok()) {
       if(!this->configure()) {
         ROS_FATAL("Failed to configure gscam!");
@@ -467,7 +467,7 @@ namespace gscam {
         break;
       }
     }
-
+    ros::shutdown();
   }
 
   // Example callbacks for appsink
