@@ -240,10 +240,10 @@ namespace gscam {
 
     // Create ROS camera interface
     if (image_encoding_ == "jpeg") {
-        jpeg_pub_ = nh_.advertise<sensor_msgs::CompressedImage>("camera/image_raw/compressed",1);
-        cinfo_pub_ = nh_.advertise<sensor_msgs::CameraInfo>("camera/camera_info",1);
+        jpeg_pub_ = nh_.advertise<sensor_msgs::CompressedImage>("camera/image_raw/compressed", 10);
+        cinfo_pub_ = nh_.advertise<sensor_msgs::CameraInfo>("camera/camera_info", 10);
     } else {
-        camera_pub_ = image_transport_.advertiseCamera("camera/image_raw", 1);
+        camera_pub_ = image_transport_.advertiseCamera("camera/image_raw", 10);
     }
 
     return true;
