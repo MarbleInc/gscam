@@ -1,6 +1,7 @@
 
 #include <ros/ros.h>
 #include <gscam/gscam.h>
+#include <boost/thread/thread.hpp>
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "gscam_publisher");
