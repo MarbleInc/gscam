@@ -15,8 +15,8 @@ extern "C"{
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/SetCameraInfo.h>
 
-#include <diagnostic_updater/diagnostic_updater.h>
-#include <diagnostic_updater/publisher.h>
+#include <mbot_diagnostics/diagnostic_updater.h>
+#include <mbot_diagnostics/output_diagnostic.h>
 
 #include <stdexcept>
 #include <string>
@@ -32,7 +32,6 @@ namespace gscam {
     bool init_stream();
     void publish_stream();
     void cleanup_stream();
-    void diagnostic_update(const ros::TimerEvent&);
 
     void run();
 
@@ -71,9 +70,8 @@ namespace gscam {
     ros::Publisher jpeg_pub_;
     ros::Publisher cinfo_pub_;
 
-    diagnostic_updater::Updater updater_;
-    diagnostic_updater::TopicDiagnostic* freq_diagnostic_;
-    ros::Timer diagnostic_update_timer_;
+    marble::DiagnosticUpdater* updater_;
+    marble::OutputDiagnostic* output_image_diagnostic_;
   };
 
 }

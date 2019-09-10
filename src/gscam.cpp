@@ -42,7 +42,15 @@ namespace gscam {
 
   GSCam::~GSCam()
   {
-    delete freq_diagnostic_;
+    if (output_image_diagnostic_) {
+      delete output_image_diagnostic_;
+      output_image_diagnostic_ = nullptr;
+    }
+
+    if (updater_) {
+      delete updater_;
+      updater_ = nullptr;
+    }
   }
 
   bool GSCam::configure()
@@ -114,14 +122,19 @@ namespace gscam {
 
     if (expected_fps_> 0) {
       ROS_INFO_STREAM("Setting up diagnostics at " << expected_fps_ << " fps.");
-      updater_.setHardwareID(frame_id_);
-      freq_diagnostic_ = new diagnostic_updater::TopicDiagnostic("camera", updater_,
-        diagnostic_updater::FrequencyStatusParam(
-          &expected_fps_, &expected_fps_, fps_tolerance_, diagnostic_window_),
-        diagnostic_updater::TimeStampStatusParam(0, max_delay_));
 
-      diagnostic_update_timer_ = nh_.createTimer(ros::Duration(1.0),
-        &GSCam::diagnostic_update, this);
+      updater_ = new marble::DiagnosticUpdater(camera_name_ + "/image_raw/compressed", nh_);
+
+      marble::diagnostics::FrequencyParams warning_freq_params;
+      warning_freq_params.min_frequency = expected_fps_ - fps_tolerance_;
+      warning_freq_params.max_frequency = expected_fps_ + fps_tolerance_;
+
+      marble::OutputDiagnosticParams output_image_params;
+      output_image_params.freq_warning_thresholds = warning_freq_params;
+      output_image_params.time_window_sec = 10.0;
+
+      output_image_diagnostic_ = new marble::OutputDiagnostic(camera_name_ + "/image_raw/compressed", nh_, output_image_params);
+      output_image_diagnostic_->addToUpdater(updater_);
     }
 
     return true;
@@ -416,16 +429,11 @@ namespace gscam {
       }
 
       if (expected_fps_ > 0) {
-        freq_diagnostic_->tick(cinfo->header.stamp);
-        updater_.update();
+        output_image_diagnostic_->tick();
       }
 
       ros::spinOnce();
     }
-  }
-
-  void GSCam::diagnostic_update(const ros::TimerEvent&) {
-    updater_.update();
   }
 
   void GSCam::cleanup_stream()

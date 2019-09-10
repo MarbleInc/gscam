@@ -48,16 +48,17 @@ if(USE_ROSBUILD)
 
 else()
   # Use Catkin
-  find_package(catkin REQUIRED 
+  find_package(catkin REQUIRED
     COMPONENTS roscpp image_transport sensor_msgs nodelet
     camera_calibration_parsers camera_info_manager
+    mbot_diagnostics
     )
 
   catkin_package(
     INCLUDE_DIRS include
     LIBRARIES gscam
     CATKIN_DEPENDS roscpp nodelet image_transport sensor_msgs
-    camera_calibration_parsers camera_info_manager
+    camera_calibration_parsers camera_info_manager mbot_diagnostics
     DEPENDS GSTREAMER GST_APP
     )
 
@@ -123,8 +124,6 @@ endif()
 # Interim compatibility
 # Remove this in the next distribution release
 configure_file(scripts/gscam_node.in ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/gscam_node)
-file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/gscam_node 
+file(COPY ${CMAKE_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/gscam_node
   DESTINATION ${EXECUTABLE_OUTPUT_PATH}
   FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-
-
