@@ -123,7 +123,7 @@ namespace gscam {
     if (expected_fps_> 0) {
       ROS_INFO_STREAM("Setting up diagnostics at " << expected_fps_ << " fps.");
 
-      updater_ = new marble::DiagnosticUpdater(camera_name_ + "/image_raw/compressed", nh_);
+      updater_ = new marble::DiagnosticUpdater("/" + camera_name_ + "/image_raw/compressed", nh_);
 
       marble::diagnostics::FrequencyParams warning_freq_params;
       warning_freq_params.min_frequency = expected_fps_ - fps_tolerance_;
@@ -133,7 +133,7 @@ namespace gscam {
       output_image_params.freq_warning_thresholds = warning_freq_params;
       output_image_params.time_window_sec = 10.0;
 
-      output_image_diagnostic_ = new marble::OutputDiagnostic(camera_name_ + "/image_raw/compressed", nh_, output_image_params);
+      output_image_diagnostic_ = new marble::OutputDiagnostic("/" + camera_name_ + "/image_raw/compressed", nh_, output_image_params);
       output_image_diagnostic_->addToUpdater(updater_);
     }
 
