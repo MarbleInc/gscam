@@ -72,6 +72,7 @@ namespace gscam {
 
     marble::DiagnosticUpdater* updater_;
     marble::OutputDiagnostic* output_image_diagnostic_;
+    std::string diagnostic_display_name;
   };
 
 }
