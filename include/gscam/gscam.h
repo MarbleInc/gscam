@@ -15,8 +15,8 @@ extern "C"{
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/SetCameraInfo.h>
 
-#include <mbot_diagnostics/diagnostic_updater.h>
-#include <mbot_diagnostics/output_diagnostic.h>
+#include <diagnostics_ros/diagnostic_updater.h>
+#include <diagnostics_ros/output_diagnostic.h>
 
 #include <stdexcept>
 #include <string>
